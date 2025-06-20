@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: theme('colors.beer-foam');
+  background-color: theme('colors.beer-dark');
+}

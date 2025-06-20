@@ -53,7 +53,7 @@ const BackgroundSlideshow = ({ images }) => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % shuffledImages.length);
         setIsFading(false);
       }, 1000); // fade duration should match transition duration
-    }, 500); // How long each image stays visible
+    }, 750); // How long each image stays visible
 
     return () => clearInterval(interval);
   }, [shuffledImages]);

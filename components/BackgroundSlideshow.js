@@ -81,7 +81,7 @@ const BackgroundSlideshow = ({ images }) => {
           }}
         />
       ))}
-       <div className="absolute inset-0 bg-black/60" />
+       <div className="absolute inset-0 bg-black/10" />
     </div>
   );
 };

@@ -66,12 +66,11 @@ const PlacesFinder = () => {
             return;
         }
 
-        // --- UPDATED OPTIONS ---
-        // We now explicitly allow low-accuracy location, which is faster and more reliable on mobile.
+        // --- UPDATED GEOLOCATION OPTIONS FOR RELIABILITY ---
         const geoOptions = { 
             enableHighAccuracy: false, 
-            timeout: 10000, 
-            maximumAge: 0 
+            timeout: 15000,          // Increased timeout to 15 seconds
+            maximumAge: 60000,       // Allow using a cached location up to 1 minute old
         };
 
         navigator.geolocation.getCurrentPosition(

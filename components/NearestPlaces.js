@@ -4,7 +4,6 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 // A component to render a single item in the places list.
 const PlaceListItem = ({ place, userLocation }) => {
-    // --- CORRECTED DIRECTIONS URL ---
     // Creates a full directions link with a starting point (origin) and walking directions.
     const getDirectionsUrl = () => {
         if (!place || !place.displayName || !userLocation) return '#';
@@ -67,7 +66,13 @@ const PlacesFinder = () => {
             return;
         }
 
-        const geoOptions = { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 };
+        // --- UPDATED OPTIONS ---
+        // We now explicitly allow low-accuracy location, which is faster and more reliable on mobile.
+        const geoOptions = { 
+            enableHighAccuracy: false, 
+            timeout: 10000, 
+            maximumAge: 0 
+        };
 
         navigator.geolocation.getCurrentPosition(
             (position) => setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude }),

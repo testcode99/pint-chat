@@ -20,7 +20,7 @@ const BackgroundSlideshow = ({ images }) => {
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % shuffledImages.length);
         setIsFading(false);
-      }, 20); // Fade duration
+      }, 3); // Fade duration
     }, 1000); // Time each image is visible
 
     return () => clearInterval(interval);
@@ -41,7 +41,8 @@ const BackgroundSlideshow = ({ images }) => {
             backgroundImage: `url(/${image})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover', // This layer covers the whole area
-            filter: 'blur(20px) brightness(0.7)',
+            // --- UPDATED: Brightness filter removed ---
+            filter: 'blur(20px)', 
             transform: `scale(1.1)`, // Scale up to hide blurry edges
           }}
         />
@@ -59,7 +60,8 @@ const BackgroundSlideshow = ({ images }) => {
           }}
         />
       ))}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* --- UPDATED: Overlay opacity reduced for more brightness --- */}
+      <div className="absolute inset-0 bg-black/20" />
     </div>
   );
 };

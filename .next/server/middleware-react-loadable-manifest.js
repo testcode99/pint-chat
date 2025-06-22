@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"pages/index.js -> ../components/NearestPlaces\":{\"id\":\"pages/index.js -> ../components/NearestPlaces\",\"files\":[\"static/chunks/components_NearestPlaces_js.js\"]}}"

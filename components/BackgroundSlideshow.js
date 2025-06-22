@@ -7,9 +7,7 @@ const BackgroundSlideshow = ({ images }) => {
   const [shuffledImages, setShuffledImages] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const handleScroll = () => {
-    setScrollPosition(window.pageYOffset);
-  };
+  const handleScroll = () => setScrollPosition(window.pageYOffset);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -30,8 +28,8 @@ const BackgroundSlideshow = ({ images }) => {
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % shuffledImages.length);
         setIsFading(false);
-      }, 1000);
-    }, 5000);
+      },2); // Fade duration
+    }, 1000); // Time each image is visible
 
     return () => clearInterval(interval);
   }, [shuffledImages]);
@@ -40,7 +38,6 @@ const BackgroundSlideshow = ({ images }) => {
     return <div className="fixed inset-0 bg-beer-dark z-0" />;
   }
 
-  // Use a different parallax factor for a more subtle effect
   const parallaxTranslation = scrollPosition * 0.1;
 
   return (
@@ -48,26 +45,26 @@ const BackgroundSlideshow = ({ images }) => {
       {shuffledImages.map((image, index) => (
         <div
           key={image + '-bg'}
-          className="absolute w-full h-full transition-opacity duration-1000"
+          className="absolute w-full h-full transition-opacity duration-300"
           style={{
             opacity: index === currentImageIndex && !isFading ? 1 : 0,
             backgroundImage: `url(/${image})`,
             backgroundPosition: 'center',
-            backgroundSize: 'cover', // This layer covers the whole area
-            filter: 'blur(20px) brightness(0.7)', // Blur and darken it
-            transform: `scale(1.1) translateY(-${parallaxTranslation}px)`, // Scale up to hide blurry edges
+            backgroundSize: 'cover',
+            filter: 'blur(20px) brightness(0.7)',
+            transform: `scale(1.1) translateY(-${parallaxTranslation}px)`,
           }}
         />
       ))}
       {shuffledImages.map((image, index) => (
          <div
           key={image + '-fg'}
-          className="absolute w-full h-full transition-opacity duration-1000"
+          className="absolute w-full h-full transition-opacity duration-300"
           style={{
             opacity: index === currentImageIndex && !isFading ? 1 : 0,
             backgroundImage: `url(/${image})`,
             backgroundPosition: 'center',
-            backgroundSize: 'contain', // This layer shows the full image
+            backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             transform: `translateY(-${parallaxTranslation}px)`,
           }}

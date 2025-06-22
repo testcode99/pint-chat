@@ -1,8 +1,29 @@
+/* Import the Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
+  font-family: theme('fontFamily.sans');
   color: theme('colors.beer-foam');
   background-color: theme('colors.beer-dark');
+}
+
+/* --- NEW: Bubble Animation Keyframes --- */
+@keyframes rise {
+  0% {
+    bottom: -50px;
+    transform: translateX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 150%;
+    transform: translateX(var(--translateX));
+    opacity: 0;
+  }
 }

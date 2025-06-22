@@ -1,1 +1,8 @@
-{}
+{
+  "pages/index.js -> ../components/NearestPlaces": {
+    "id": "pages/index.js -> ../components/NearestPlaces",
+    "files": [
+      "static/chunks/components_NearestPlaces_js.js"
+    ]
+  }
+}

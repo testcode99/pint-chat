@@ -1,18 +1,10 @@
-// Manages the full-screen background image slideshow with a less-zoomed parallax effect.
+// Manages the full-screen background image slideshow with a fixed (non-scrolling) position.
 import React, { useState, useEffect } from 'react';
 
 const BackgroundSlideshow = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const [shuffledImages, setShuffledImages] = useState([]);
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const handleScroll = () => setScrollPosition(window.pageYOffset);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     if (images && images.length > 0) {
@@ -28,7 +20,7 @@ const BackgroundSlideshow = ({ images }) => {
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % shuffledImages.length);
         setIsFading(false);
-      },2); // Fade duration
+      }, 300); // Fade duration
     }, 1000); // Time each image is visible
 
     return () => clearInterval(interval);
@@ -37,8 +29,6 @@ const BackgroundSlideshow = ({ images }) => {
   if (shuffledImages.length === 0) {
     return <div className="fixed inset-0 bg-beer-dark z-0" />;
   }
-
-  const parallaxTranslation = scrollPosition * 0.1;
 
   return (
     <div className="fixed inset-0 w-full h-full z-0 overflow-hidden">
@@ -50,9 +40,9 @@ const BackgroundSlideshow = ({ images }) => {
             opacity: index === currentImageIndex && !isFading ? 1 : 0,
             backgroundImage: `url(/${image})`,
             backgroundPosition: 'center',
-            backgroundSize: 'cover',
+            backgroundSize: 'cover', // This layer covers the whole area
             filter: 'blur(20px) brightness(0.7)',
-            transform: `scale(1.1) translateY(-${parallaxTranslation}px)`,
+            transform: `scale(1.1)`, // Scale up to hide blurry edges
           }}
         />
       ))}
@@ -64,9 +54,8 @@ const BackgroundSlideshow = ({ images }) => {
             opacity: index === currentImageIndex && !isFading ? 1 : 0,
             backgroundImage: `url(/${image})`,
             backgroundPosition: 'center',
-            backgroundSize: 'contain',
+            backgroundSize: 'contain', // This layer shows the full image
             backgroundRepeat: 'no-repeat',
-            transform: `translateY(-${parallaxTranslation}px)`,
           }}
         />
       ))}

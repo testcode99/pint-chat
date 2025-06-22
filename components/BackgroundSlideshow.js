@@ -20,7 +20,7 @@ const BackgroundSlideshow = ({ images }) => {
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % shuffledImages.length);
         setIsFading(false);
-      }, 300); // Fade duration
+      }, 20); // Fade duration
     }, 1000); // Time each image is visible
 
     return () => clearInterval(interval);

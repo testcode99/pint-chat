@@ -49,7 +49,10 @@ const LeaderboardList = ({ data, onUserClick }) => {
                              <div className="text-lg font-black text-white/50 w-8 text-center flex-shrink-0">{index + 1}</div>
                              <div className="flex-grow pl-3">
                                  <p className="font-bold truncate">{user.name}</p>
-                                 <p className="text-sm text-beer-foam/70">Longest Streak: {user.streak} days</p>
+                                 <p className="text-sm text-beer-foam/70">
+                                     {user.phoneNumber && <span className="text-beer-foam/50">{user.phoneNumber} • </span>}
+                                     Longest Streak: {user.streak} days
+                                 </p>
                              </div>
                              <div className="flex-shrink-0 text-right">
                                  <p className="text-xl font-bold">{user.count}</p>

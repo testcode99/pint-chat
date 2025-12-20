@@ -1,4 +1,5 @@
 // The main page of the application that displays the dashboard.
+import { useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { analyzeChat } from '../lib/parser';
@@ -8,6 +9,8 @@ import LeaderboardList from '../components/LeaderboardList';
 import PostsByDayChart from '../components/PostsByDayChart';
 import PostsByHourChart from '../components/PostsByHourChart';
 import Footer from '../components/Footer';
+import UserStatsModal from '../components/UserStatsModal';
+import UserCompareModal from '../components/UserCompareModal';
 
 const NearestPlaces = dynamic(() => import('../components/NearestPlaces'), {
   ssr: false,
@@ -32,10 +35,13 @@ const StatCard = ({ title, value, subtitle }) => (
 
 
 export default function Home({ analysis }) {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showCompareModal, setShowCompareModal] = useState(false);
+
   if (!analysis) {
     return <div>Error loading analysis. Please check your chat data.</div>;
   }
-  
+
   return (
     <div>
       <Head>
@@ -54,30 +60,64 @@ export default function Home({ analysis }) {
               <h1 className="text-4xl md:text-6xl font-display font-bold text-beer-gold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                 1,000,000 Pints
               </h1>
-              <p className="text-lg text-beer-foam/80 mt-2">
-                As of: {analysis.latestTimestamp}
+              <p className="text-5xl md:text-7xl font-bold text-white mt-4 mb-2">
+                {analysis.totalPosts.toLocaleString()}
+              </p>
+              <p className="text-lg text-beer-foam/80">
+                posts tracked as of {analysis.latestTimestamp}
               </p>
             </header>
+
+            {/* Summary Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white/5 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-beer-gold">{analysis.totalUsers}</p>
+                <p className="text-sm text-beer-foam/70">Total Users</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-beer-gold">{analysis.totalDays}</p>
+                <p className="text-sm text-beer-foam/70">Days Tracked</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-beer-gold">{analysis.avgPostsPerDay}</p>
+                <p className="text-sm text-beer-foam/70">Avg Posts/Day</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 text-center">
+                <p className="text-3xl font-bold text-beer-gold">{analysis.currentStreak}</p>
+                <p className="text-sm text-beer-foam/70">Day Streak</p>
+              </div>
+            </div>
             
             <div className="border-2 border-white/20 rounded-xl p-4">
                 <NearestPlaces />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <InfographicCard title="Top Poster (Today)" name={analysis.topPosterToday.name} count={analysis.topPosterToday.count} />
               <InfographicCard title="Top Poster (This Week)" name={analysis.topPosterThisWeek.name} count={analysis.topPosterThisWeek.count} />
-              <StatCard title="Most Prolific Day" value={analysis.recordDayCount} subtitle={`posts on ${analysis.recordDayDate}`} />
+              <InfographicCard title="Top Poster (This Month)" name={analysis.topPosterThisMonth.name} count={analysis.topPosterThisMonth.count} />
+              <InfographicCard title="Top Poster (All Time)" name={analysis.topPosterAllTime.name} count={analysis.topPosterAllTime.count} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <StatCard title="Longest Overall Streak" value={analysis.longestOverallStreak.count} subtitle={analysis.longestOverallStreak.dates} />
-                <StatCard title="Current Group Streak" value={analysis.currentStreak} subtitle={analysis.currentStreak === 1 ? 'day' : 'consecutive days'} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <StatCard title="Most Prolific Day" value={analysis.recordDayCount} subtitle={`posts on ${analysis.recordDayDate}`} />
+                <StatCard title="Longest Streak" value={`${analysis.longestOverallStreak.count} days`} subtitle={analysis.longestOverallStreak.dates} />
+                <StatCard title="Active Since" value={new Date(analysis.firstPostDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} subtitle={`${analysis.totalDays} days of posting`} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="p-4 sm:p-6 rounded-xl border-2 border-white/20">
-                    <h2 className="text-2xl font-display text-center mb-4 text-beer-amber">Leaderboard</h2>
-                    <LeaderboardList data={analysis.leaderboardData} />
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-2xl font-display text-beer-amber">Leaderboard</h2>
+                        <button
+                            onClick={() => setShowCompareModal(true)}
+                            className="bg-beer-amber text-beer-dark font-bold py-2 px-4 rounded-lg hover:bg-beer-gold transition-colors text-sm"
+                        >
+                            Compare Users
+                        </button>
+                    </div>
+                    <p className="text-center text-beer-foam/50 text-sm mb-3">Click a user to view their stats</p>
+                    <LeaderboardList data={analysis.leaderboardData} onUserClick={setSelectedUser} />
                 </div>
 
                 <div className="space-y-6">
@@ -99,6 +139,24 @@ export default function Home({ analysis }) {
         </main>
         <Footer />
       </div>
+
+      {/* User Stats Modal */}
+      {selectedUser && (
+        <UserStatsModal
+          user={selectedUser}
+          userProfile={analysis.userProfiles[selectedUser]}
+          onClose={() => setSelectedUser(null)}
+        />
+      )}
+
+      {/* User Compare Modal */}
+      {showCompareModal && (
+        <UserCompareModal
+          userProfiles={analysis.userProfiles}
+          leaderboardData={analysis.leaderboardData}
+          onClose={() => setShowCompareModal(false)}
+        />
+      )}
     </div>
   );
 }

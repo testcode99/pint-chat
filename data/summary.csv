@@ -1,0 +1,21 @@
+metric,value
+total_posts,8596
+total_users,593
+total_days_with_posts,204
+first_post_date,2025-05-17
+last_post_date,2025-12-20
+record_day_date,2025-10-25
+record_day_count,178
+top_poster_all_time,~ Ellis P
+top_poster_all_time_count,344
+top_poster_today,~ Jon Rickard
+top_poster_today_count,4
+top_poster_this_week,~ James
+top_poster_this_week_count,17
+longest_overall_streak,170
+longest_streak_start,2025-05-17
+longest_streak_end,2025-11-02
+current_streak,34
+avg_posts_per_day,42.14
+busiest_hour,18
+busiest_day_of_week,Saturday

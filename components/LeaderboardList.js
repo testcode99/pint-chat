@@ -26,20 +26,24 @@ const AnimatedBar = ({ percentage }) => {
     );
 };
 
-const LeaderboardList = ({ data }) => {
+const LeaderboardList = ({ data, onUserClick }) => {
     if (!data || data.length === 0) {
         return <p className="text-center">No data to display.</p>;
     }
-    
+
     const topPostCount = data[0].count;
 
     return (
         <div className="space-y-3">
             {data.map((user, index) => {
                 const percentage = topPostCount > 0 ? (user.count / topPostCount) * 100 : 0;
-                
+
                 return (
-                    <div key={user.name} className="relative flex items-center text-white p-2 rounded-lg bg-white/5 overflow-hidden">
+                    <div
+                        key={user.name}
+                        className="relative flex items-center text-white p-2 rounded-lg bg-white/5 overflow-hidden cursor-pointer hover:bg-white/10 transition-colors"
+                        onClick={() => onUserClick && onUserClick(user.name)}
+                    >
                         <AnimatedBar percentage={percentage} />
                         <div className="relative z-10 flex items-center w-full">
                              <div className="text-lg font-black text-white/50 w-8 text-center flex-shrink-0">{index + 1}</div>

@@ -174,7 +174,24 @@ export default function Home({ analysis }) {
 }
 
 export async function getStaticProps() {
+  const fs = require('fs');
+  const path = require('path');
+
   const analysis = analyzeChat(chatText);
+
+  // Scan public folder for images if parser didn't find any
+  if (!analysis.imageFiles || analysis.imageFiles.length === 0) {
+    const publicDir = path.join(process.cwd(), 'public');
+    try {
+      const files = fs.readdirSync(publicDir);
+      analysis.imageFiles = files.filter(f =>
+        /\.(jpg|jpeg|png|gif)$/i.test(f)
+      );
+    } catch (e) {
+      analysis.imageFiles = [];
+    }
+  }
+
   return {
     props: {
       analysis,

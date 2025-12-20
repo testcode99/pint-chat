@@ -37,6 +37,13 @@ const StatCard = ({ title, value, subtitle }) => (
 export default function Home({ analysis }) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showCompareModal, setShowCompareModal] = useState(false);
+  const [compareInitialUser, setCompareInitialUser] = useState(null);
+
+  const handleCompareFromStats = (user) => {
+    setSelectedUser(null);
+    setCompareInitialUser(user);
+    setShowCompareModal(true);
+  };
 
   if (!analysis) {
     return <div>Error loading analysis. Please check your chat data.</div>;
@@ -146,6 +153,7 @@ export default function Home({ analysis }) {
           user={selectedUser}
           userProfile={analysis.userProfiles[selectedUser]}
           onClose={() => setSelectedUser(null)}
+          onCompare={handleCompareFromStats}
         />
       )}
 
@@ -154,7 +162,11 @@ export default function Home({ analysis }) {
         <UserCompareModal
           userProfiles={analysis.userProfiles}
           leaderboardData={analysis.leaderboardData}
-          onClose={() => setShowCompareModal(false)}
+          onClose={() => {
+            setShowCompareModal(false);
+            setCompareInitialUser(null);
+          }}
+          initialUser={compareInitialUser}
         />
       )}
     </div>

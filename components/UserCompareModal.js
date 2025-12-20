@@ -4,8 +4,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const UserCompareModal = ({ userProfiles, leaderboardData, onClose }) => {
-    const [user1, setUser1] = useState('');
+const UserCompareModal = ({ userProfiles, leaderboardData, onClose, initialUser }) => {
+    const [user1, setUser1] = useState(initialUser || '');
     const [user2, setUser2] = useState('');
 
     // Close on escape key

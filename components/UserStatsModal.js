@@ -4,7 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const UserStatsModal = ({ user, userProfile, onClose }) => {
+const UserStatsModal = ({ user, userProfile, onClose, onCompare }) => {
     // Close on escape key
     useEffect(() => {
         const handleEscape = (e) => {
@@ -90,12 +90,22 @@ const UserStatsModal = ({ user, userProfile, onClose }) => {
                         <h2 className="text-2xl font-display text-beer-gold">{user}</h2>
                         <p className="text-beer-foam/70">Rank #{userProfile.rank} • {userProfile.totalPosts} posts ({userProfile.percentageOfTotal}%)</p>
                     </div>
-                    <button
-                        onClick={onClose}
-                        className="text-beer-foam/70 hover:text-beer-gold text-3xl font-bold w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
-                    >
-                        ×
-                    </button>
+                    <div className="flex items-center gap-2">
+                        {onCompare && (
+                            <button
+                                onClick={() => onCompare(user)}
+                                className="px-4 py-2 bg-beer-amber/20 hover:bg-beer-amber/40 text-beer-gold rounded-lg transition-colors text-sm font-medium"
+                            >
+                                Compare
+                            </button>
+                        )}
+                        <button
+                            onClick={onClose}
+                            className="text-beer-foam/70 hover:text-beer-gold text-3xl font-bold w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+                        >
+                            ×
+                        </button>
+                    </div>
                 </div>
 
                 <div className="p-4 space-y-6">

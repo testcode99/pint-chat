@@ -88,9 +88,6 @@ const UserStatsModal = ({ user, userProfile, onClose, onCompare }) => {
                 <div className="sticky top-0 bg-beer-dark border-b border-beer-amber/30 p-4 flex justify-between items-center">
                     <div>
                         <h2 className="text-2xl font-display text-beer-gold">{user}</h2>
-                        {userProfile.phoneNumber && (
-                            <p className="text-sm text-beer-foam/50">{userProfile.phoneNumber}</p>
-                        )}
                         <p className="text-beer-foam/70">Rank #{userProfile.rank} • {userProfile.totalPosts} posts ({userProfile.percentageOfTotal}%)</p>
                     </div>
                     <div className="flex items-center gap-2">

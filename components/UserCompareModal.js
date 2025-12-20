@@ -192,16 +192,10 @@ const UserCompareModal = ({ userProfiles, leaderboardData, onClose, initialUser 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="border-2 border-beer-amber/50 rounded-xl p-4 text-center">
                                     <h3 className="text-xl font-bold text-beer-gold truncate">{user1}</h3>
-                                    {profile1.phoneNumber && (
-                                        <p className="text-xs text-beer-foam/50 truncate">{profile1.phoneNumber}</p>
-                                    )}
                                     <p className="text-beer-foam/70">Rank #{profile1.rank}</p>
                                 </div>
                                 <div className="border-2 border-blue-400/50 rounded-xl p-4 text-center">
                                     <h3 className="text-xl font-bold text-blue-400 truncate">{user2}</h3>
-                                    {profile2.phoneNumber && (
-                                        <p className="text-xs text-beer-foam/50 truncate">{profile2.phoneNumber}</p>
-                                    )}
                                     <p className="text-beer-foam/70">Rank #{profile2.rank}</p>
                                 </div>
                             </div>
